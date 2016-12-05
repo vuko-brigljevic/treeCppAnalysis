@@ -1,0 +1,12 @@
+Utilities to creat an analysis framework in compiled C++
+to analyze ROOT trees
+
+To create it run the python script:
+
+python createCppTreeAnalysis.py -i <root_file>  \
+       -t <tree_name> -c <tree_class_name> 
+       -e <event_class_name> 
+       -a <main_name> -d <working_directory_of_new_project>
+
+
+
