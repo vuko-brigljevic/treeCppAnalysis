@@ -1,10 +1,13 @@
 // #include "EventTree_V07_04_14_00.h"
 #include "TreeEvent.h"
 
+
+#include "TreeAnalysis.h"
+
 #include <string>
 #include <iostream>
 #include <fstream>
-
+#include <vector>
 
 using namespace std;
 
@@ -76,8 +79,19 @@ int main(int argc, char **argv)
   /// HERE IS THE PLACE WHERE YOU PUT YOUR STUFF 
 
 
-// Event loop
-  unsigned int nEvents = 0;
+  // Define your analyses here
+
+  vector<TreeAnalysis*> analyses;
+
+
+
+  for (unsigned int iana=0; iana<analyses.size(); iana++ ) 
+    {
+      analyses[iana]->Init();
+    }
+	 
+
+  // Event loop
 
   for  (Int_t k = 0; k < events; k++) {
 
@@ -87,7 +101,20 @@ int main(int argc, char **argv)
     ev_tTree->GetEntry(k);
     the_event->ReadEvent();
 
+    // Run all defined analyses
+    for (unsigned int iana=0; iana<analyses.size(); iana++ ) 
+      {
+	analyses[iana]->EventAnalysis(the_event);
+      }
+
   }
+
+
+  for (unsigned int iana=0; iana<analyses.size(); iana++ ) 
+    {
+      analyses[iana]->End(fout);
+    }
+
 
   // We need to write explicity all histograms to the output root
   fout->cd();

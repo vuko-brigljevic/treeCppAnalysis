@@ -15,6 +15,8 @@ public:
 
   void ReadEvent();
 
+  bool passesSelection();
+
 protected:
 
 

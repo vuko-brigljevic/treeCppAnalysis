@@ -4,23 +4,39 @@
 #include "TreeEvent.h"
 
 
+#include "TH1D.h"
+
+#include <string>
+#include <map>
+
+
+using namespace std;
+
+
+
 class TreeAnalysis {
 
 public:
 
-  TreeAnalysis(TreeEvent * e);
+  TreeAnalysis(string name="");
 
   virtual void Init();
 
-  void CreateBaseHistos();
+  virtual void EventAnalysis(TreeEvent * ev);
 
-  virtual void EventAnalysis();
+  virtual void FinishAnalysis(); // This is for user stuff
 
-  virtual void Finish(TFile * fout =0);
+  void End(TFile * fout =0);
+
+  void Add1DHistogram(char  * key, char * title, int nbins, double xmin, double xmax);
 
 protected:
 
-  TreeEvent * evt;
+
+  string analysisName;
+
+  std::map<string, TH1D * > histos_1d;
+  std::map<string, TH1D * > histos_2d;
 
 };
 

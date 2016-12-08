@@ -39,8 +39,11 @@ parser.add_argument('-i', action="store", dest = 'infile')
 parser.add_argument('-t', action="store", dest = 'treeName', default ='')
 parser.add_argument('-c', action="store", dest = 'TreeClass', default = 'EventClass')
 parser.add_argument('-e', action="store", dest = 'EventClass', default = 'Event')
-parser.add_argument('-a', action="store", dest = 'analyzer', default = 'Analyzer')
+parser.add_argument('-m', action="store", dest = 'analyzer', default = 'Analyzer')
 parser.add_argument('-d', action="store", dest = 'workdir', default = 'workdir')
+parser.add_argument('-a', action="store", dest = 'analysisClass', default = 'UserAnalysis')
+
+
 
 parsed_args = parser.parse_args()
 
@@ -61,8 +64,8 @@ analyzer = "HbbAnalyzer"
 make_directory(parsed_args.workdir)
 
 
-templateDir="/users/vuko/phan/templateCppAnalysis/"
-
+#templateDir="/users/vuko/phan/templateCppAnalysis/"
+templateDir=os.getcwd()
 
 os.chdir(parsed_args.workdir)
 
@@ -81,9 +84,10 @@ _tree.MakeClass(parsed_args.TreeClass)
 commands = [ 
     "cp " + templateDir + "/TreeEvent.h " + parsed_args.workdir + "/" + parsed_args.EventClass + ".h",
     "cp " + templateDir + "/TreeEvent.C " + parsed_args.workdir + "/" + parsed_args.EventClass + ".C",
+    "cp " + templateDir + "/TreeAnalysis.h " + parsed_args.workdir + "/" + parsed_args.analysisClass + ".h",
+    "cp " + templateDir + "/TreeAnalysis.C " + parsed_args.workdir + "/" + parsed_args.analysisClass + ".C",
     "cp " + templateDir + "/analyzeTree.cpp " + parsed_args.workdir + "/" + parsed_args.analyzer + ".cpp",
-    "cp " + templateDir + "/Makefile " + parsed_args.workdir + "/" ,
-
+    "cp " + templateDir + "/Makefile " + parsed_args.workdir + "/" 
     ]
 
 for com in commands:
@@ -94,19 +98,23 @@ namesToSwitch = {
     "TreeClass" : parsed_args.TreeClass ,
     "TreeEvent" : parsed_args.EventClass, 
     "TREE_IN_ROOTFILE" : parsed_args.treeName,
-    "analyzeTree"     : parsed_args.analyzer 
+    "analyzeTree"      : parsed_args.analyzer,
+    "TreeAnalysis"     : parsed_args.analysisClass
     }
 
 filesToProcess = [
     parsed_args.EventClass+".h",
     parsed_args.EventClass+".C",
+    parsed_args.analysisClass+".h",
+    parsed_args.analysisClass+".C",
     "Makefile",
     parsed_args.analyzer+".cpp"
 ]
 
 for key in namesToSwitch:
     for file in filesToProcess:
-        inplace_change(file , key , namesToSwitch[key])
+        file_full_path = parsed_args.workdir + "/" + file
+        inplace_change(file_full_path , key , namesToSwitch[key])
 
 
 

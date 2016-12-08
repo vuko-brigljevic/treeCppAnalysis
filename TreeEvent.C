@@ -25,3 +25,9 @@ void TreeEvent::ReadEvent()
 }
 
 
+bool TreeEvent::passesSelection(){
+
+
+  return false;
+
+}

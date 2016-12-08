@@ -1,5 +1,6 @@
 .PHONY: all clean
 
+CPPFLAGS := -g -I. $(shell root-config --cflags)
 CXXFLAGS= -g -Wall `root-config --cflags`
 LDFLAGS=`root-config --glibs`
 

@@ -1,4 +1,4 @@
-CPPFLAGS := -g -I. $(shell root-config --cflags)
+xkCPPFLAGS := -g -I. $(shell root-config --cflags)
 CXXFLAGS := -Wall -Wextra -ggdb3 -O9 -march=native -mfpmath=sse -msse3 -ftree-vectorize -pipe -DNDEBUG
 LDFLAGS := $(CXXFLAGS) `root-config --glibs`
 
